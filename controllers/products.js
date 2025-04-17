@@ -1,12 +1,14 @@
 const Product = require("../models/product");
+const audit = require("../audit/audit");
 
 const getAllProductsStatic = async (req, res) => {
   const products = await Product.find({ price: { $gt: 30 } })
     .sort("price")
     .select("name price");
-
+  await audit.prepareAudit("READ", "admin", "getAllProductsStatic", false);
   res.status(200).json({ products, nbHits: products.length });
 };
+
 const getAllProducts = async (req, res) => {
   const { featured, company, name, sort, fields, numericFilters } = req.query;
   const queryObject = {};
@@ -64,6 +66,7 @@ const getAllProducts = async (req, res) => {
   // 4 7 7 7 2
 
   const products = await result;
+  await audit.prepareAudit("READ", "user", "products", false, queryObject);
   res.status(200).json({ products, nbHits: products.length });
 };
 
