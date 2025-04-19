@@ -70,7 +70,18 @@ const getAllProducts = async (req, res) => {
   res.status(200).json({ products, nbHits: products.length });
 };
 
+// basic endpoint for testing
+const getProductDemo = (req, res) => {
+  const { name } = req.query;
+  if (name) {
+    res.send(`<h1>Hello ${name}</h1>`);
+  } else {
+    res.send("<h1>Test product endpoint</h1>");
+  }
+};
+
 module.exports = {
   getAllProducts,
   getAllProductsStatic,
+  getProductDemo,
 };
