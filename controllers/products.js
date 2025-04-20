@@ -1,6 +1,8 @@
 const Product = require("../models/product");
 const audit = require("../audit/audit");
-
+const ApiError = require("../middleware/apiError");
+const errorStatus = require("../middleware/errorStatus");
+const ErrorType = require("../middleware/errorType");
 const getAllProductsStatic = async (req, res) => {
   const products = await Product.find({ price: { $gt: 30 } })
     .sort("price")
@@ -71,12 +73,19 @@ const getAllProducts = async (req, res) => {
 };
 
 // basic endpoint for testing
-const getProductDemo = (req, res) => {
+const getProductDemo = (req, res, next) => {
   const { name } = req.query;
-  if (name) {
-    res.send(`<h1>Hello ${name}</h1>`);
+  if (!name) {
+    return next(
+      new ApiError(
+        ErrorType.API_ERROR,
+        errorStatus.Bad_Request,
+        "Please provide name",
+        true
+      )
+    );
   } else {
-    res.send("<h1>Test product endpoint</h1>");
+    res.send(`<h1>Hello ${name}</h1>`);
   }
 };
 

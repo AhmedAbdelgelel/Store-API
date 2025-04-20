@@ -1,0 +1,8 @@
+const ErrorType = {
+  API_ERROR: "API_ERROR",
+  VALIDATION_ERROR: "VALIDATION_ERROR",
+  GENERAL_ERROR: "GENERAL_ERROR",
+  DATABASE_ERROR: "DATABASE_ERROR",
+};
+
+module.exports = ErrorType;
